@@ -1,0 +1,95 @@
+{% extends "manager/base.html" %}
+
+{% block title %}
+    Статистика сайта
+{% endblock %}
+
+{% block content %}
+<div class="container mt-5">
+    <h2 class="text-center mb-4">Статистика сайта</h2>
+    <div class="row">
+        <div class="col-md-4 mb-4">
+            <div class="card text-center shadow-sm">
+                <div class="card-body">
+                    <h5 class="card-title">Общее количество пользователей</h5>
+                    <p class="card-text"><b>{{ users_count }}</b></p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4 mb-4">
+            <div class="card text-center shadow-sm">
+                <div class="card-body">
+                    <h5 class="card-title">Общее количество заказов</h5>
+                    <p class="card-text"><b>{{ orders_count }}</b></p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4 mb-4">
+            <div class="card text-center shadow-sm">
+                <div class="card-body">
+                    <h5 class="card-title">Количество выполненных заказов</h5>
+                    <p class="card-text"><b>{{ completed_orders_count }}</b></p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4 mb-4">
+            <div class="card text-center shadow-sm">
+                <div class="card-body">
+                    <h5 class="card-title">Количество новых заказов (за последние 24 часа)</h5>
+                    <p class="card-text"><b>{{ new_orders_count }}</b></p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4 mb-4">
+            <div class="card text-center shadow-sm">
+                <div class="card-body">
+                    <h5 class="card-title">Количество возвращенных заказов</h5>
+                    <p class="card-text"><b>{{ returned_orders_count }}</b></p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4 mb-4">
+            <div class="card text-center shadow-sm">
+                <div class="card-body">
+                    <h5 class="card-title">Количество проданных товаров</h5>
+                    <p class="card-text"><b>{{ total_sold }}</b></p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4 mb-4">
+            <div class="card text-center shadow-sm">
+                <div class="card-body">
+                    <h5 class="card-title">Средний чек</h5>
+                    <p class="card-text"><b>{{ average_order_value }}</b> тенге</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4 mb-4">
+            <div class="card text-center shadow-sm">
+                <div class="card-body">
+                    <h5 class="card-title">Итоговый заработок</h5>
+                    <p class="card-text"><b>{{ total_revenue }}</b> тенге</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4 mb-4">
+            <div class="card text-center shadow-sm">
+                <div class="card-body">
+                    <h5 class="card-title">Активные пользователи за последний месяц</h5>
+                    <p><b>{{ active_users_count }}</b></p>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row mt-4 justify-content-center mb-4">
+        <div class="col-12 text-center">
+            <h4>Топ-5 лучших покупателей</h4>
+            <ul class="list-group mx-auto" style="max-width: 500px;">
+                {% for customer in top_customers %}
+                    <li class="list-group-item">{{ customer.username }}: <b>{{ customer.total_spent }}</b> тенге</li>
+                {% endfor %}
+            </ul>
+        </div>
+    </div>
+</div>
+{% endblock %}

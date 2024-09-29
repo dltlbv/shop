@@ -1,0 +1,107 @@
+{% extends "shop/base.html" %}
+
+{% block title %}
+    Мои заказы
+{% endblock %}
+
+{% block content %}
+<div class="container mt-5">
+    <h1 class="text-center mb-4">Мои заказы</h1>
+
+    <table class="table table-bordered table-hover">
+        <thead>
+            <tr>
+                <th scope="col">Номер заказа</th>
+                <th scope="col">Дата создания</th>
+                <th scope="col">Адрес доставки</th>
+                <th scope="col">Статус</th>
+                <th scope="col">Сумма</th>
+                <th scope="col">Статус оплаты</th>
+                <th scope="col">Оплата</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for order in orders %}
+            <tr>
+                <td>{{ order.id }}</td>
+                <td>{{ order.created_at|date:"d M Y, H:i" }}</td>
+                <td>{{ order.address }}</td>
+                <td>{{ order.status }}</td>
+                <td>{{ order.total_price }}</td>
+                <td>{{ order.payment_status }}</td>
+                <td>
+                    {% if order.payment_status == False and order.status != 'canceled' %}
+                        <a href="{% url 'payment' order.id %}" class="btn btn-primary">Оплатить</a>
+                    {% elif order.status == 'canceled' %}
+                        <span class="text-danger">Отменен</span>
+                    {% else %}
+                        <span class="text-success">Оплачен</span>
+                    {% endif %}
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    <div class="pagination mt-4">
+        <ul class="pagination justify-content-center mt-3">
+            {% if page_obj.has_previous %}
+                <li class="page-item">
+                    <a class="page-link" href="?page=1" aria-label="Первая">
+                        <span aria-hidden="true">&laquo;&laquo;</span>
+                    </a>
+                </li>
+                <li class="page-item">
+                    <a class="page-link" href="?page={{ page_obj.previous_page_number }}" aria-label="Предыдущая">
+                        <span aria-hidden="true">&laquo;</span>
+                    </a>
+                </li>
+            {% else %}
+                <li class="page-item disabled">
+                    <a class="page-link" href="#" aria-label="Первая">
+                        <span aria-hidden="true">&laquo;&laquo;</span>
+                    </a>
+                </li>
+                <li class="page-item disabled">
+                    <a class="page-link" href="#" aria-label="Предыдущая">
+                        <span aria-hidden="true">&laquo;</span>
+                    </a>
+                </li>
+            {% endif %}
+            {% for page_num in paginator.page_range %}
+                {% if page_num == page_obj.number %}
+                    <li class="page-item active">
+                        <a class="page-link" href="#">{{ page_num }}</a>
+                    </li>
+                {% else %}
+                    <li class="page-item">
+                        <a class="page-link" href="?page={{ page_num }}">{{ page_num }}</a>
+                    </li>
+                {% endif %}
+            {% endfor %}
+            {% if page_obj.has_next %}
+                <li class="page-item">
+                    <a class="page-link" href="?page={{ page_obj.next_page_number }}" aria-label="Следующая">
+                        <span aria-hidden="true">&raquo;</span>
+                    </a>
+                </li>
+                <li class="page-item">
+                    <a class="page-link" href="?page={{ page_obj.paginator.num_pages }}" aria-label="Последняя">
+                        <span aria-hidden="true">&raquo;&raquo;</span>
+                    </a>
+                </li>
+            {% else %}
+                <li class="page-item disabled">
+                    <a class="page-link" href="#" aria-label="Следующая">
+                        <span aria-hidden="true">&raquo;</span>
+                    </a>
+                </li>
+                <li class="page-item disabled">
+                    <a class="page-link" href="#" aria-label="Последняя">
+                        <span aria-hidden="true">&raquo;&raquo;</span>
+                    </a>
+                </li>
+            {% endif %}
+        </ul>
+    </div>
+</div>
+{% endblock %}
